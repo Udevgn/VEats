@@ -10,6 +10,7 @@ package com.crio.qeats.services;
 import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
+import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
 import com.crio.qeats.utils.FetchRestaurantsCallable;
 import java.time.LocalTime;
@@ -221,6 +222,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     } else {
       return new GetRestaurantsResponse(new ArrayList<>());
     }
+  }
+
+  @Override
+  public List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants) {
+    return restaurantRepositoryService.postRestaurants(restaurants);
   }
 
   private void shutdownAndAwaitTermination(ExecutorService executorService) {

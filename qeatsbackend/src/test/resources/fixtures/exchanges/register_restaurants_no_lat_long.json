@@ -1,0 +1,20 @@
+[{"id":"2",
+  "name":"nunnu da dhaba",
+  "city":"bombay",
+  "imageUrl":"",
+  "latitude":98.2,
+  "opensAt":"10:00",
+  "closesAt":"22:00",
+  "attributes":["punjabi indian"]
+}
+,{"id":"1",
+  "restaurantId":"1",
+  "name":"kaakae da dhaba",
+  "city":"Delhi",
+  "imageUrl":"",
+  "latitude":12.2,
+  "opensAt":"10:00",
+  "closesAt":"22:00",
+  "attributes":["north indian"]
+}
+]

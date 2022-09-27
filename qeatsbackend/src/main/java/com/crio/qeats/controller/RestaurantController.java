@@ -50,7 +50,7 @@ public class RestaurantController {
   @GetMapping(RESTAURANTS_API)
   public ResponseEntity<GetRestaurantsResponse> getRestaurants(
 
-      @Valid
+      @RequestBody
 
        GetRestaurantsRequest getRestaurantsRequest) {
     
@@ -61,12 +61,12 @@ public class RestaurantController {
     boolean isSearch = searchFor != null && !searchFor.isEmpty();
     if (isSearch) {
       getRestaurantsResponse = restaurantService
-          .findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
+          .findRestaurantsBySearchQueryMt(getRestaurantsRequest, LocalTime.now());
     } else {
     
       //CHECKSTYLE:OFF
       getRestaurantsResponse = restaurantService
-          .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());      
+          .findRestaurantsBySearchQueryMt(getRestaurantsRequest, LocalTime.now());
       //CHECKSTYLE:ON
     
     }

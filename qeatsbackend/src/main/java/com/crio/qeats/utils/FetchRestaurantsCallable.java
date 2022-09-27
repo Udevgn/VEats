@@ -29,23 +29,24 @@ public class FetchRestaurantsCallable implements Callable<List<Restaurant>> {
     }
     @Override
     public List<Restaurant> call() throws Exception {
-       if(this.fetchString.equals("byRestaurantName")){
-        return restaurantRepositoryService.findRestaurantsByName(
-              getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
-              searchFor, currentTime, servingRadiusInKms);
-       }else if(this.fetchString.equals("byRestaurantAttr")){
-        return restaurantRepositoryService
-          .findRestaurantsByAttributes(getRestaurantsRequest.getLatitude(),
-              getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms);
-       }else if(this.fetchString.equals("byItemName")){
-        return restaurantRepositoryService
-          .findRestaurantsByItemName(getRestaurantsRequest.getLatitude(),
-              getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms);
-       }else if(this.fetchString.equals("byItemAttr")){
-        return restaurantRepositoryService
-          .findRestaurantsByItemAttributes(getRestaurantsRequest.getLatitude(),
-              getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms);
-       }
+        switch (this.fetchString) {
+            case "byRestaurantName":
+                return restaurantRepositoryService.findRestaurantsByName(
+                        getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+                        searchFor, currentTime, servingRadiusInKms);
+            case "byRestaurantAttr":
+                return restaurantRepositoryService
+                        .findRestaurantsByAttributes(getRestaurantsRequest.getLatitude(),
+                                getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms);
+            case "byItemName":
+                return restaurantRepositoryService
+                        .findRestaurantsByItemName(getRestaurantsRequest.getLatitude(),
+                                getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms);
+            case "byItemAttr":
+                return restaurantRepositoryService
+                        .findRestaurantsByItemAttributes(getRestaurantsRequest.getLatitude(),
+                                getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms);
+        }
        return null;
     }  
 }

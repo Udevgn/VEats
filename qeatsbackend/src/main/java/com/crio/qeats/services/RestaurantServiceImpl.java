@@ -40,7 +40,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Autowired
   private RestaurantRepositoryService restaurantRepositoryService;
   
-  ExecutorService executorService = Executors.newFixedThreadPool(10);
+  ExecutorService executorService ;
 
   @Override
   public GetRestaurantsResponse findAllRestaurantsCloseBy(
@@ -178,13 +178,12 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public GetRestaurantsResponse findRestaurantsBySearchQueryMt(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
-
+      executorService= Executors.newFixedThreadPool(10);
         Double servingRadiusInKms =
         isPeakHour(currentTime) ? peakHoursServingRadiusInKms : normalHoursServingRadiusInKms;
 
     String searchFor = getRestaurantsRequest.getSearchFor();
-    List<List<Restaurant>> listOfRestaurantLists = new ArrayList<>();
-    List<FetchRestaurantsCallable> callables  = new ArrayList();
+    List<FetchRestaurantsCallable> callables  = new ArrayList<FetchRestaurantsCallable> ();
 
     if (!searchFor.isEmpty()) {
       callables.add(new FetchRestaurantsCallable("byRestaurantAttr", getRestaurantsRequest, restaurantRepositoryService,searchFor,currentTime,servingRadiusInKms));
@@ -198,24 +197,27 @@ public class RestaurantServiceImpl implements RestaurantService {
       List<Restaurant> restaurantList = new ArrayList<>();
       try{
         List<Future<List<Restaurant>>> futureResults = executorService.invokeAll(callables);
-      shutdownAndAwaitTermination(executorService);
 
-      
-      for(Future<List<Restaurant>> futureResult:futureResults){
-          for (Restaurant restaurant : futureResult.get()) {
-            if (!restaurantSet.contains(restaurant.getRestaurantId())) {
-              restaurantList.add(restaurant);
-              restaurantSet.add(restaurant.getRestaurantId());
+
+        for(Future<List<Restaurant>> futureResult:futureResults){
+          try{
+            for (Restaurant restaurant : futureResult.get()) {
+              if (!restaurantSet.contains(restaurant.getRestaurantId())) {
+                restaurantList.add(restaurant);
+                restaurantSet.add(restaurant.getRestaurantId());
+              }
             }
+          }catch (Exception e){
+
           }
       }
+
       }catch(InterruptedException ie){
 
-      }catch(ExecutionException ee){
-        
+      }finally {
+        executorService.shutdown();
       }
-      
-      
+      shutdownAndAwaitTermination(executorService);
 
       return new GetRestaurantsResponse(restaurantList);
     } else {

@@ -6,10 +6,13 @@
 
 package com.crio.qeats.controller;
 
+import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
+import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.services.RestaurantService;
 import java.time.LocalTime;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +48,12 @@ public class RestaurantController {
   @Autowired
   private RestaurantService restaurantService;
 
-
+  @PostMapping(RESTAURANTS_API)
+  public ResponseEntity<List<Restaurant>> postRestaurants(
+          @RequestBody
+          List<RestaurantEntity> restaurantList) {
+      return ResponseEntity.ok().body(restaurantService.postRestaurants(restaurantList));
+  }
 
   @GetMapping(RESTAURANTS_API)
   public ResponseEntity<GetRestaurantsResponse> getRestaurants(

@@ -253,7 +253,14 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     // CRIO_UNCOMMENT_END_MODULE_RESTAURANTSEARCH
   }
 
-
+  @Override
+  public List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants) {
+    ModelMapper modelMapper = modelMapperProvider.get();
+    return restaurantRepository.saveAll(restaurants)
+            .stream()
+            .map(restaurant-> modelMapper.map(restaurant,Restaurant.class))
+            .collect(Collectors.toList());
+  }
 
 
   // TODO: CRIO_TASK_MODULE_NOSQL

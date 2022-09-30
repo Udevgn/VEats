@@ -2,6 +2,7 @@
 package com.crio.qeats.repositoryservices;
 
 import com.crio.qeats.dto.Restaurant;
+import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,6 +63,11 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
 
   public List<Restaurant> findRestaurantsByItemAttributes(Double latitude, Double longitude,
       String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+    return null;
+  }
+
+  @Override
+  public List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants) {
     return null;
   }
 

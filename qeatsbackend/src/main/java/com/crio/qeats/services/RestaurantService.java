@@ -7,9 +7,13 @@
 
 package com.crio.qeats.services;
 
+import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
+import com.crio.qeats.models.RestaurantEntity;
+
 import java.time.LocalTime;
+import java.util.List;
 
 public interface RestaurantService {
 
@@ -62,4 +66,8 @@ public interface RestaurantService {
    */
   GetRestaurantsResponse findRestaurantsBySearchQueryMt(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime);
+
+
+  List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants);
+
 }

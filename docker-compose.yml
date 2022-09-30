@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  web:
+    image: udevgn/veats_1.02
+    build: .
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+      - db
+  db:
+    image: mongo:latest
+    hostname: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+  redis:
+    hostname: redis
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"

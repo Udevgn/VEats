@@ -10,6 +10,8 @@ import com.crio.qeats.dto.Restaurant;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.Future;
+
+import com.crio.qeats.models.RestaurantEntity;
 import org.springframework.scheduling.annotation.Async;
 
 public interface RestaurantRepositoryService {
@@ -64,6 +66,8 @@ public interface RestaurantRepositoryService {
    */
   List<Restaurant> findRestaurantsByItemAttributes(Double latitude, Double longitude,
       String searchString, LocalTime currentTime, Double servingRadiusInKms);
+
+  List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants);
 
 }
 

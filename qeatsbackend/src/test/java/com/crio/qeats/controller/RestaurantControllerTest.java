@@ -18,6 +18,7 @@ import static com.crio.qeats.controller.RestaurantController.RESTAURANT_API_ENDP
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,8 +31,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.crio.qeats.QEatsApplication;
+import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
+import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.services.RestaurantService;
 import com.crio.qeats.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -44,6 +47,7 @@ import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -52,6 +56,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -94,6 +99,36 @@ public class RestaurantControllerTest {
     MockitoAnnotations.initMocks(this);
 
     mvc = MockMvcBuilders.standaloneSetup(restaurantController).build();
+  }
+
+
+  @Test
+  public void addingRestaurantMustHaveLatLong() throws Exception{
+    List<RestaurantEntity> restaurants  = loadRestaurantsAddRequestBodyWithNoLatLong();
+
+    assertNotNull(restaurants);
+
+    URI uri = UriComponentsBuilder
+            .fromPath(RESTAURANT_API_URI)
+            .build().toUri();
+
+    MockHttpServletResponse response = mvc.perform(
+            post(uri.toString()).content(asJsonString(restaurants)).accept(APPLICATION_JSON_UTF8)
+    ).andReturn().getResponse();
+
+    assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), response.getStatus());
+
+    verify(restaurantService, times(0))
+            .postRestaurants(ArgumentMatchers.anyListOf(RestaurantEntity.class));
+
+  }
+
+  private static String asJsonString(final Object obj) {
+    try {
+      return new ObjectMapper().writeValueAsString(obj);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Test
@@ -324,7 +359,12 @@ public class RestaurantControllerTest {
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
   }
 
-
+  List<RestaurantEntity> loadRestaurantsAddRequestBodyWithNoLatLong() throws Exception{
+    String fixture = FixtureHelpers.fixture(FIXTURES+"/register_restaurants_no_lat_long.json");
+    return objectMapper.readValue(fixture,
+            new TypeReference<List<RestaurantEntity>>() {
+            });
+  }
 
   private GetRestaurantsResponse loadSampleResponseList() throws IOException {
     String fixture =

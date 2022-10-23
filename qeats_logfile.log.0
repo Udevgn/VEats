@@ -1,4 +1,0 @@
-[2022-08-20 12:25:22.202] - 3729 INFO [restartedMain] --- org.apache.catalina.core.StandardService: Starting service [Tomcat]
-[2022-08-20 12:25:22.246] - 3729 INFO [restartedMain] --- org.apache.catalina.core.StandardEngine: Starting Servlet engine: [Apache Tomcat/9.0.17]
-[2022-08-20 12:25:22.539] - 3729 INFO [restartedMain] --- org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: Initializing Spring embedded WebApplicationContext
-[2022-08-20 12:25:25.102] - 3729 INFO [restartedMain] --- org.apache.catalina.core.StandardService: Stopping service [Tomcat]

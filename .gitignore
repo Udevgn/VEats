@@ -4,7 +4,7 @@ HELP.md
 */build/
 /bin/
 */bin/
-!gradle/wrapper/gradle-wrapper.jar
+!qeatsbackend/gradle/wrapper/gradle-wrapper.jar
 *.log
 *.gz
 *.class

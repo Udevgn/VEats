@@ -37,7 +37,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 
-@SpringBootTest(classes = {QEatsApplication.class})
+@SpringBootTest
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 @DirtiesContext
 @ActiveProfiles("test")
@@ -95,7 +95,7 @@ class RestaurantServiceTest {
 
 
   @Test
-  void normalHourFindRestaurantsSearchQuery() throws IOException {
+  void  normalHourFindRestaurantsSearchQuery() throws IOException {
     when(restaurantRepositoryServiceMock.findRestaurantsByName(any(Double.class),
         any(Double.class), any(String.class), any(LocalTime.class), any(Double.class)))
         .thenReturn(loadRestaurantsDuringNormalHours());

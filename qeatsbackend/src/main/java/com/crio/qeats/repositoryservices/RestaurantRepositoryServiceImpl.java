@@ -10,6 +10,7 @@ import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.repositories.ItemRepository;
 import com.crio.qeats.repositories.MenuRepository;
 import com.crio.qeats.repositories.RestaurantRepository;
+import com.crio.qeats.services.SequenceGeneratorService;
 import com.crio.qeats.utils.GeoLocation;
 import com.crio.qeats.utils.GeoUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,6 +31,7 @@ import javax.inject.Provider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -45,9 +47,10 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   
   @Autowired
   private RestaurantRepository restaurantRepository;
-  
 
-  
+  @Autowired
+  private SequenceGeneratorService service;
+
   @Autowired
   private ItemRepository itemRepository;
 
@@ -254,12 +257,12 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   }
 
   @Override
-  public List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants) {
+  public RestaurantEntity postRestaurant(Restaurant restaurant) {
     ModelMapper modelMapper = modelMapperProvider.get();
-    return restaurantRepository.saveAll(restaurants)
-            .stream()
-            .map(restaurant-> modelMapper.map(restaurant,Restaurant.class))
-            .collect(Collectors.toList());
+    RestaurantEntity restaurantEntity = modelMapper.map(restaurant,RestaurantEntity.class);
+    restaurantEntity.setId(String.valueOf(service.getSequenceNumber(RestaurantEntity.SEQUENCE_NAME)));
+    restaurantRepository.save(restaurantEntity);
+    return restaurantEntity;
   }
 
 

@@ -9,6 +9,7 @@ package com.crio.qeats.controller;
 import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
+import com.crio.qeats.exchanges.PostRestaurantRequest;
 import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.services.RestaurantService;
 import java.time.LocalTime;
@@ -49,10 +50,10 @@ public class RestaurantController {
   private RestaurantService restaurantService;
 
   @PostMapping(RESTAURANTS_API)
-  public ResponseEntity<List<Restaurant>> postRestaurants(
+  public ResponseEntity<RestaurantEntity> postRestaurants(
           @RequestBody
-          List<RestaurantEntity> restaurantList) {
-      return ResponseEntity.ok().body(restaurantService.postRestaurants(restaurantList));
+          PostRestaurantRequest restaurantPostRequest) {
+      return ResponseEntity.ok().body(restaurantService.postRestaurant(restaurantPostRequest.getRestaurant()));
   }
 
   @GetMapping(RESTAURANTS_API)
@@ -204,17 +205,6 @@ public class RestaurantController {
   //          : 5xx, if server side error.
   // Eg:
   // curl -X GET "http://localhost:8081/qeats/v1/menu?restaurantId=11"
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

@@ -225,8 +225,8 @@ public class RestaurantServiceImpl implements RestaurantService {
   }
 
   @Override
-  public List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants) {
-    return restaurantRepositoryService.postRestaurants(restaurants);
+  public RestaurantEntity postRestaurant(Restaurant restaurant) {
+    return restaurantRepositoryService.postRestaurant(restaurant);
   }
 
   private void shutdownAndAwaitTermination(ExecutorService executorService) {

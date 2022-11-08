@@ -67,7 +67,7 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
   }
 
   @Override
-  public List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants) {
+  public RestaurantEntity postRestaurant(Restaurant restaurant) {
     return null;
   }
 

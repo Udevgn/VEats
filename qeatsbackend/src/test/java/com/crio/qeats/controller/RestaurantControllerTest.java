@@ -15,6 +15,7 @@ import static com.crio.qeats.controller.RestaurantController.MENU_API;
 import static com.crio.qeats.controller.RestaurantController.POST_ORDER_API;
 import static com.crio.qeats.controller.RestaurantController.RESTAURANTS_API;
 import static com.crio.qeats.controller.RestaurantController.RESTAURANT_API_ENDPOINT;
+import static com.crio.qeats.utils.ObjectUtils.asJsonString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -119,16 +120,8 @@ public class RestaurantControllerTest {
     assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), response.getStatus());
 
     verify(restaurantService, times(0))
-            .postRestaurants(ArgumentMatchers.anyListOf(RestaurantEntity.class));
+            .postRestaurant(any(Restaurant.class));
 
-  }
-
-  private static String asJsonString(final Object obj) {
-    try {
-      return new ObjectMapper().writeValueAsString(obj);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 
   @Test

@@ -67,7 +67,7 @@ public interface RestaurantRepositoryService {
   List<Restaurant> findRestaurantsByItemAttributes(Double latitude, Double longitude,
       String searchString, LocalTime currentTime, Double servingRadiusInKms);
 
-  List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants);
+  RestaurantEntity postRestaurant(Restaurant restaurant);
 
 }
 

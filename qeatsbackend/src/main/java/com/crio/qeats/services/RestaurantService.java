@@ -68,6 +68,5 @@ public interface RestaurantService {
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime);
 
 
-  List<Restaurant> postRestaurants(List<RestaurantEntity> restaurants);
-
+  RestaurantEntity postRestaurant(Restaurant restaurant);
 }
